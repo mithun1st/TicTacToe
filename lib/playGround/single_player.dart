@@ -1,27 +1,42 @@
 import 'dart:math';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/model.dart';
 import 'package:tic_tac_toe/playGround/score_bar.dart';
 import 'package:tic_tac_toe/playGround/title_bar.dart';
+import 'package:tic_tac_toe/select_mood.dart';
 
-class MultiPlayer extends StatefulWidget {
-  static String routeName = 'multiPlayer';
+class SinglePlayer extends StatefulWidget {
+  static String routeName = 'singlePlayer';
+
+  final bool playerSymbol;
+  SinglePlayer({required this.playerSymbol});
 
   @override
   State<StatefulWidget> createState() {
-    return MultiPlayerState();
+    return SinglePlayerState();
   }
 }
 
-class MultiPlayerState extends State<MultiPlayer> {
+class SinglePlayerState extends State<SinglePlayer> {
+  //input
+  late bool isPlayerX = widget.playerSymbol;
+  //bool isX = false;
+  bool isX = Random().nextInt(2) == 0 ? true : false;
+
+  bool play = true;
+
   int xScore = 0;
   int oScore = 0;
-  late int lastIndex;
 
-  //random select who do the first tap
-  bool isX = Random().nextInt(2) == 0 ? true : false;
-  bool play = true;
+  List<Symbol> positon = [
+    //
+    Symbol.E, Symbol.E, Symbol.E,
+    //
+    Symbol.E, Symbol.E, Symbol.E,
+    //
+    Symbol.E, Symbol.E, Symbol.E,
+  ];
 
   bool get isWin {
     //--------------side
@@ -99,14 +114,89 @@ class MultiPlayerState extends State<MultiPlayer> {
     return !positon.contains(Symbol.E);
   }
 
-  List<Symbol> positon = [
-    //
-    Symbol.E, Symbol.E, Symbol.E,
-    //
-    Symbol.E, Symbol.E, Symbol.E,
-    //
-    Symbol.E, Symbol.E, Symbol.E,
-  ];
+  void singleTap(int i) {
+    //isX = !isX;
+    print('Set $isX => $i');
+    setState(() {
+      //set symbol
+      if (isX && positon[i] == Symbol.E && !isWin) {
+        positon[i] = isPlayerX ? Symbol.X : Symbol.O;
+        isX = !isX;
+        // AI system
+        if (!isX) {
+          ai();
+        }
+      } else if (!isX && positon[i] == Symbol.E && !isWin) {
+        positon[i] = isPlayerX ? Symbol.O : Symbol.X;
+        isX = !isX;
+        // AI system
+        if (!isX) {
+          ai();
+        }
+      }
+      //winer
+      if (isWin && play) {
+        if (isPlayerX) {
+          isX = !isX;
+        }
+        if (isX) {
+          xScore++;
+        } else {
+          oScore++;
+        }
+        play = false;
+        if (!isPlayerX) {
+          isX = !isX;
+        }
+        print(isX ? 'X is Winer' : 'O is Winer');
+      }
+      //tie
+      if (isTie) {
+        play = false;
+        print('Tie');
+      }
+    });
+  }
+
+  void restart() {
+    for (int i = 0; i < positon.length; i++) {
+      positon[i] = Symbol.E;
+    }
+    play = true;
+
+    //if AI Win
+    if (!isX) {
+      var i = Random().nextInt(9);
+      singleTap(i);
+    }
+    if (isTie && !isWin) {
+      isX = !isX;
+    }
+    setState(() {});
+  }
+
+  void reset() {
+    restart();
+    xScore = 0;
+    oScore = 0;
+    setState(() {});
+  }
+
+  void ai() {
+    List<int> emptyIndex = [];
+    for (int i = 0; i < positon.length; i++) {
+      if (positon[i] == Symbol.E) {
+        emptyIndex.add(i);
+      }
+    }
+    if (emptyIndex.isNotEmpty) {
+      var i = Random().nextInt(emptyIndex.length);
+      singleTap(emptyIndex[i]);
+
+      print(emptyIndex);
+      print('index $i / value ${emptyIndex[i]}');
+    }
+  }
 
   Widget BoxE(int i) {
     return Container(
@@ -142,72 +232,19 @@ class MultiPlayerState extends State<MultiPlayer> {
     );
   }
 
-  void singleTap(int i) {
-    print('Set $isX => $i');
-    setState(() {
-      //set symbol
-      if (isX && positon[i] == Symbol.E && !isWin) {
-        positon[i] = Symbol.X;
-        isX = !isX;
-        //last index
-        lastIndex = i;
-      } else if (!isX && positon[i] == Symbol.E && !isWin) {
-        positon[i] = Symbol.O;
-        isX = !isX;
-        //last index
-        lastIndex = i;
-      }
-      //winer
-      if (isWin && play) {
-        isX = !isX;
-        if (isX) {
-          xScore++;
-        } else {
-          oScore++;
-        }
-        play = false;
-        print(isX ? 'X is Winer' : 'O is Winer');
-      }
-      //tie
-      if (isTie) {
-        play = false;
-        print('-------tie');
-      }
-    });
-  }
-
-  void longTap(int i) {
-    print('last index: $lastIndex');
-    if (lastIndex == i && play) {
-      setState(() {
-        positon[i] = Symbol.E;
-      });
-      isX = !isX;
+  @override
+  void initState() {
+    // TODO: implement initState
+    if (!isX) {
+      ai();
     }
   }
 
-  void restart() {
-    for (int i = 0; i < positon.length; i++) {
-      positon[i] = Symbol.E;
-    }
-    play = true;
-    if (isTie && !isWin) {
-      isX = !isX;
-    }
-    setState(() {});
-  }
-
-  void reset() {
-    restart();
-    xScore = 0;
-    oScore = 0;
-    setState(() {});
-  }
-
+//------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
-      title: const Text('Multi Player'),
+      title: const Text('Single Player'),
       actions: [
         ElevatedButton.icon(
           onPressed: reset,
@@ -242,53 +279,45 @@ class MultiPlayerState extends State<MultiPlayer> {
           //Score Bar
           ScoreBar(x: xScore, o: oScore, barHeight: sHeight),
           //playground
-          Stack(
-            children: [
-              Container(
-                width: screenWidth,
-                height: screenWidth,
-                color: Colors.grey.shade300,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 7,
-                    crossAxisSpacing: 7,
-                    childAspectRatio: 1 / 1,
-                  ),
-                  primary: false,
-                  itemCount: 9,
-                  itemBuilder: (context, i) {
-                    //print X on display
-                    if (positon[i] == Symbol.X) {
-                      return GestureDetector(
-                        child: BoxX(i),
-                        onTap: () => singleTap(i),
-                        onLongPress: () => longTap(i),
-                      );
-                      //print Y on display
-                    } else if (positon[i] == Symbol.O) {
-                      return GestureDetector(
-                        child: BoxO(i),
-                        onTap: () => singleTap(i),
-                        onLongPress: () => longTap(i),
-                      );
-                      //print [blank] on display
-                    } else {
-                      return GestureDetector(
-                        child: BoxE(i),
-                        onTap: () => singleTap(i),
-                        onLongPress: () => longTap(i),
-                      );
-                    }
-                  },
-                ),
+          Container(
+            width: screenWidth,
+            height: screenWidth,
+            color: Colors.grey.shade300,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 7,
+                crossAxisSpacing: 7,
+                childAspectRatio: 1 / 1,
               ),
-              //win sign
-            ],
+              primary: false,
+              itemCount: 9,
+              itemBuilder: (context, i) {
+                //print X on display
+                if (positon[i] == Symbol.X) {
+                  return GestureDetector(
+                    child: BoxX(i),
+                    onTap: () => singleTap(i),
+                  );
+                  //print Y on display
+                } else if (positon[i] == Symbol.O) {
+                  return GestureDetector(
+                    child: BoxO(i),
+                    onTap: () => singleTap(i),
+                  );
+                  //print [blank] on display
+                } else {
+                  return GestureDetector(
+                    child: BoxE(i),
+                    onTap: () => singleTap(i),
+                  );
+                }
+              },
+            ),
           ),
           //title bar
           TitleBar(
-            isX: isX,
+            isX: isPlayerX ? isX : !isX,
             isWin: isWin,
             isTie: isTie,
             fnc: restart,

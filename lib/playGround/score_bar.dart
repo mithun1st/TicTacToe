@@ -4,56 +4,94 @@ import 'package:flutter/widgets.dart';
 class ScoreBar extends StatelessWidget {
   final int x;
   final int o;
+  final double barHeight;
 
-  ScoreBar({required this.x, required this.o});
+  double? percent;
+
+  ScoreBar({
+    required this.x,
+    required this.o,
+    required this.barHeight,
+  }) {
+    if (x == 0 && o == 0) {
+      percent = .5;
+    } else {
+      percent = (x / (x + o));
+    }
+    print('score: $percent');
+  }
 
   @override
   Widget build(BuildContext context) {
-    double heightScreen = MediaQuery.of(context).size.height;
     return Container(
-      height: heightScreen / 11,
+      height: barHeight / 2.5,
       width: double.infinity,
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(2),
       color: Colors.grey.shade300,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          //
-          const Flexible(
-            flex: 1,
+          Flexible(
+            flex: 10,
             fit: FlexFit.tight,
-            child: FittedBox(
-              child: Text(
-                'Player\nX',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  //
+                  Container(
+                    height: double.infinity,
+                    child: const FittedBox(
+                      child: Text(
+                        'Player\nX',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ),
+                  //
+                  Container(
+                    height: double.infinity,
+                    child: FittedBox(
+                      child: Text(
+                        '$x\t:\t$o',
+                      ),
+                    ),
+                  ),
+                  //
+                  Container(
+                    height: double.infinity,
+                    child: const FittedBox(
+                      child: Text(
+                        'Player\nO',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          //
           Flexible(
             flex: 1,
             fit: FlexFit.tight,
-            child: FittedBox(
-              child: Text(
-                '$x\t:\t$o',
-              ),
-            ),
-          ),
-          //
-          const Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: FittedBox(
-              child: Text(
-                'Player\nO',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
+            child: Container(
+              width: double.infinity,
+              color: Colors.green,
+              child: FractionallySizedBox(
+                alignment: Alignment.topLeft,
+                widthFactor: percent,
+                heightFactor: 1,
+                child: Container(
+                  color: Colors.blue,
                 ),
               ),
             ),
