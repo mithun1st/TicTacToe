@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/model.dart';
-import 'package:tic_tac_toe/playGround/score_bar.dart';
-import 'package:tic_tac_toe/playGround/title_bar.dart';
+import 'package:tic_tac_toe/bar/score_bar.dart';
+import 'package:tic_tac_toe/bar/title_bar.dart';
 import 'package:tic_tac_toe/select_mood.dart';
 
 class SinglePlayer extends StatefulWidget {
@@ -281,7 +281,7 @@ class SinglePlayerState extends State<SinglePlayer> {
           //playground
           Container(
             width: screenWidth,
-            height: screenWidth,
+            height: screenWidth - 2,
             color: Colors.grey.shade300,
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

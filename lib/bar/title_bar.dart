@@ -59,7 +59,7 @@ class TitleBar extends StatelessWidget {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         child: FittedBox(
           child: Text(
             isX ? 'Your Turn (X)' : 'Your Turn (O)',
@@ -100,6 +100,7 @@ class TitleBar extends StatelessWidget {
     return Container(
       height: barHeight / 3.2,
       width: double.infinity,
+      padding: EdgeInsets.all(4),
       color: Colors.teal,
       child: isWin
           ? Row(
@@ -110,7 +111,7 @@ class TitleBar extends StatelessWidget {
                   child: title(),
                 ),
                 Flexible(
-                  flex: 2,
+                  flex: 3,
                   fit: FlexFit.tight,
                   child: restart(),
                 ),

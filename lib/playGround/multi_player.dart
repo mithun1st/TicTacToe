@@ -1,9 +1,10 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/model.dart';
-import 'package:tic_tac_toe/playGround/score_bar.dart';
-import 'package:tic_tac_toe/playGround/title_bar.dart';
+import 'package:tic_tac_toe/bar/score_bar.dart';
+import 'package:tic_tac_toe/bar/title_bar.dart';
 
 class MultiPlayer extends StatefulWidget {
   static String routeName = 'multiPlayer';
@@ -246,7 +247,7 @@ class MultiPlayerState extends State<MultiPlayer> {
             children: [
               Container(
                 width: screenWidth,
-                height: screenWidth,
+                height: screenWidth - 2,
                 color: Colors.grey.shade300,
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -283,9 +284,9 @@ class MultiPlayerState extends State<MultiPlayer> {
                   },
                 ),
               ),
-              //win sign
             ],
           ),
+
           //title bar
           TitleBar(
             isX: isX,

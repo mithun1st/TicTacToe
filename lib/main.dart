@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tic_tac_toe/select_mood.dart';
 import 'package:tic_tac_toe/playGround/multi_player.dart';
 import 'package:tic_tac_toe/playGround/single_player.dart';
@@ -37,6 +36,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal.shade50,
       appBar: AppBar(
         title: const Text('Tic Tac Toe'),
       ),

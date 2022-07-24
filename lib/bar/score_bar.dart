@@ -26,7 +26,6 @@ class ScoreBar extends StatelessWidget {
     return Container(
       height: barHeight / 2.5,
       width: double.infinity,
-      padding: EdgeInsets.all(2),
       color: Colors.grey.shade300,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,7 +34,7 @@ class ScoreBar extends StatelessWidget {
             flex: 10,
             fit: FlexFit.tight,
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -55,6 +54,7 @@ class ScoreBar extends StatelessWidget {
                   ),
                   //
                   Container(
+                    padding: EdgeInsets.all(4),
                     height: double.infinity,
                     child: FittedBox(
                       child: Text(

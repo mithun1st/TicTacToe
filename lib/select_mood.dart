@@ -34,20 +34,22 @@ class SelectMoodState extends State<SelectMood> {
           Container(
             width: sWidth / 1.4,
             child: GestureDetector(
-              onTap: () => singleP(),
+              onTap: singleP,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //single
                   Container(
+                    height: 70,
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
-                      vertical: 30,
+                      vertical: 8,
                     ),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
                       ),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -76,13 +78,15 @@ class SelectMoodState extends State<SelectMood> {
                       ),
                     ),
                   ),
+                  //--------switch x/o
                   Container(
+                    height: 30,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
                       color: Colors.black.withOpacity(.2),
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -93,7 +97,7 @@ class SelectMoodState extends State<SelectMood> {
                             const Text(
                               'X',
                               style: TextStyle(
-                                fontSize: 40,
+                                fontSize: 25,
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -115,7 +119,7 @@ class SelectMoodState extends State<SelectMood> {
                             const Text(
                               'O',
                               style: TextStyle(
-                                fontSize: 40,
+                                fontSize: 25,
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -139,25 +143,26 @@ class SelectMoodState extends State<SelectMood> {
             ),
           ),
           //---------------------
-          Container(
-            width: sWidth / 1.4,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.blue,
-                  Colors.green,
-                ],
+          GestureDetector(
+            onTap: multiP,
+            child: Container(
+              width: sWidth / 1.4,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.blue,
+                    Colors.green,
+                  ],
+                ),
               ),
-            ),
-            child: GestureDetector(
-              onTap: () => singleP(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
+                    height: 100,
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
@@ -167,7 +172,7 @@ class SelectMoodState extends State<SelectMood> {
                       child: Column(
                         children: [
                           Icon(
-                            Icons.person,
+                            Icons.people,
                             color: Colors.brown.shade50,
                           ),
                           Text(
